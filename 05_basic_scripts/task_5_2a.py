@@ -48,14 +48,14 @@ m=m+"0"*(32-ml)
 net = network.split(".")
 n=f"{bin(int(net[0]))[2:]:>08}"
 n=n+f"{bin(int(net[1]))[2:]:>08}"
-n=n+f"{bin(int(net[1]))[2:]:>08}"
+n=n+f"{bin(int(net[2]))[2:]:>08}"
 n=n+f"{bin(int(net[3]))[2:]:>08}"
 n=n[:ml]
 n=n+"0"*(32-ml)
 
 print (f"""
 
-network: {n}
+network: 
 {int(n[0:8], 2):<10} {int(n[8:16], 2):<10} {int(n[16:24], 2):<10} {int(n[24:32], 2):<10}
 {n[0:8]:<10} {n[8:16]:<10} {n[16:24]:<10} {n[24:32]:<10}
 Mask:
