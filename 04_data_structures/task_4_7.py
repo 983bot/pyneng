@@ -10,3 +10,11 @@
 """
 
 mac = "AAAA:BBBB:CCCC"
+mac = bin(int(mac.replace(":", ""), 16)).strip("0b")
+
+
+# reverse convertation
+ mac = list(hex(int(mac, 2)).strip("0x"))
+ mac.insert(4,".")
+ mac.insert(9,".")
+ mac = "".join(mac).upper()
