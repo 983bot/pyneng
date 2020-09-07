@@ -1,0 +1,11 @@
+---
+- name: Run show arp on routers
+  hosts: cisco_routers
+  gather_facts: false
+  tasks:
+    - name: run sh ip arp command
+      ios_command:
+        commands: sh ip arp
+      register: sh_arp_output
+    - name: return output
+      debug: var=sh_arp_output.stdout_lines

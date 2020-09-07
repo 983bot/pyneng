@@ -1,0 +1,28 @@
+---
+- name: create access-list 
+  hosts: 10.240.80.2
+  gather_facts: false
+  tasks:
+    - name: delete ACL from interface
+      ios_config:
+        parents: 
+          - interface GigabitEthernet0
+        lines:
+          - no ip access-group INET-to-LAN in
+    - name: create ACL
+      ios_config:
+        before: 
+          - no ip access-list extended INET-to-LAN
+        parents:
+          - ip access-list extended INET-to-LAN
+        lines:
+          - permit tcp 10.0.1.0 0.0.0.255 any eq www
+          - permit tcp 10.0.1.0 0.0.0.255 any eq 22
+          - permit icmp any any
+    - name: apply ACL
+      ios_config:
+        parents:
+          - interface GigabitEthernet0
+        lines:
+          - ip access-group INET-to-LAN in
+

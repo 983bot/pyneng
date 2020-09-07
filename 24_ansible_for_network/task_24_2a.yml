@@ -1,0 +1,12 @@
+---
+- name: gather router facts
+  hosts: cisco_routers
+  gather_facts: false
+  tasks:
+    - name: gather all facts
+      ios_facts:
+        gather_subset: all
+    - name: write interfaces fact to files
+      copy:
+        content: "{{ansible_net_interfaces | to_nice_json}}"
+        dest: "all_facts/{{inventory_hostname}}_intf_facts.yml"

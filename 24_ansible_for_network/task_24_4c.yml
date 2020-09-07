@@ -1,0 +1,33 @@
+---
+- name: create access-list 
+  hosts: 10.240.80.2
+  gather_facts: false
+  tasks:
+    - name: delete ACL from interface
+      ios_config:
+        parents: 
+          - interface {{outside_intf}}
+        lines:
+          - no ip access-group INET-to-LAN in
+      register: cmd
+    - name: create ACL
+      ios_config:
+        before: 
+          - no ip access-list extended INET-to-LAN
+        parents:
+          - ip access-list extended INET-to-LAN
+        lines:
+          - permit tcp 10.0.1.0 0.0.0.255 any eq www
+          - permit tcp 10.0.1.0 0.0.0.255 any eq 22
+          - permit tcp 10.0.1.0 0.0.0.255 any eq telnet
+          - permit icmp any any
+        replace: block
+    - name: apply ACL
+      ios_config:
+        parents:
+          - interface {{outside_intf}}
+        lines:
+          - ip access-group INET-to-LAN in
+    - name: display commands
+      debug: var=cmd.updates
+      when: cmd.changed

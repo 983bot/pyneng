@@ -1,0 +1,17 @@
+---
+- name: gather router facts
+  hosts: cisco_routers
+  gather_facts: false
+  tasks:
+    - name: gather all facts
+      ios_facts:
+        gather_subset: all
+    - name: run sh ipv6 int br command
+      ios_command:
+        commands: show ipv6 int br
+      register: show_result
+    - name: display show_result
+      debug: var=show_result.stdout_lines
+      when: ansible_net_all_ipv6_addresses|bool
+    - name: display ipv6 facts
+      debug: var=ansible_net_all_ipv6_addresses
